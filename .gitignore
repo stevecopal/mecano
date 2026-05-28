@@ -20,7 +20,7 @@ logs/
 # Pas de .dockerignore global ici (dans chaque service)
 
 # ─── Environnement ──────────────────────────────────────────────────────────
-.env              # ← JAMAIS sur GitHub !
+.env             # ← JAMAIS sur GitHub !
 .env.local
 .env.*.local
 
