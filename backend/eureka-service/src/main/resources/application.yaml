@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: eureka-service
+
+
+server:
+  port: 8761  # Port standard d'Eureka — ne pas changer, c'est une convention
+
+eureka:
+  instance:
+    hostname: localhost  # En développement local
+  client:
+    # Ces deux lignes sont CRUCIALES et contre-intuitives :
+    # Eureka NE doit PAS s'enregistrer lui-même (il est le registre, pas un client)
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    # Délai avant de retirer un service non-répondant (en ms)
+    # 0 = immédiat (pratique en dev, à ajuster en prod)
+    eviction-interval-timer-in-ms: 0
+
+# Exposer les endpoints de santé (utile pour Docker healthcheck)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
