@@ -253,13 +253,13 @@ Peu importe son IP, peu importe son port.
    - **Project** : `Maven`
    - **Language** : `Java`
    - **Spring Boot** : `3.2.x` (dernière stable)
-   - **Group** : `com.carplatform`
-   - **Artifact** : `discovery-service`
-   - **Name** : `discovery-service`
+   - **Group** : `com.mecano`
+   - **Artifact** : `eureka-service`
+   - **Name** : `eureka-service`
    - **Java** : `21`
 3. Dépendances à ajouter :
    - ✅ **Eureka Server**
-4. Clique **"Generate"** → extrait le ZIP dans `backend/discovery-service/`
+4. Clique **"Generate"** → extrait le ZIP dans `backend/`
 
 ### Le fichier `pom.xml` — Explication
 
@@ -298,7 +298,7 @@ Peu importe son IP, peu importe son port.
 ### La classe principale
 
 ```java
-// backend/discovery-service/src/main/java/com/carplatform/discoveryservice/DiscoveryServiceApplication.java
+// backend/eureka-service/src/main/java/com/carplatform/discoveryservice/DiscoveryServiceApplication.java
 
 package com.carplatform.discoveryservice;
 
