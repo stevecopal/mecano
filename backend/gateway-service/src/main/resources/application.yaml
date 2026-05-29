@@ -1,75 +1,22 @@
 spring:
   application:
     name: gateway-service
-
-server:
-  port: 8080  # Port unique d'entrée pour tout le système
   cloud:
     gateway:
-      # Active la découverte automatique via Eureka
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true  # auth-service au lieu de AUTH-SERVICE dans les URLs
+      mvc:
+        routes:
+          - id: auth-service
+            uri: lb://AUTH-SERVICE
+            predicates:
+              - Path=/api/auth/**
 
-      # Définition manuelle des routes (plus de contrôle)
-      routes:
-
-        # ─── ROUTE 1 : Auth Service ───────────────────────────────────────────
-        - id: auth-service-route        # Identifiant unique de la route
-          uri: lb://AUTH-SERVICE        # lb:// = Load Balanced via Eureka
-                                        # AUTH-SERVICE = nom dans Eureka
-          predicates:
-            - Path=/api/auth/**         # Toute requête commençant par /api/auth/
-                                        # est redirigée vers AUTH-SERVICE
-          filters:
-            - StripPrefix=1             # Supprime /api du chemin avant de transmettre
-                                        # /api/auth/login → /auth/login côté service
-
-        # ─── ROUTE 2 : User Service ───────────────────────────────────────────
-        - id: user-service-route
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/api/users/**
-          filters:
-            - StripPrefix=1
-
-        # ─── ROUTE 3 : Mechanic Service ───────────────────────────────────────
-        - id: mechanic-service-route
-          uri: lb://MECHANIC-SERVICE
-          predicates:
-            - Path=/api/mechanics/**
-          filters:
-            - StripPrefix=1
-
-      # Configuration CORS (Cross-Origin Resource Sharing)
-      # Nécessaire pour que React (port 3000) puisse appeler la Gateway (port 8080)
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins:
-              - "http://localhost:3000"  # Adresse du frontend React
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders: "*"
-            allowCredentials: true
-
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/api/users/**
+server:
+  port: 8080  # Port unique d'entrée pour tout le système
 eureka:
   client:
     service-url:
-      # Adresse du serveur Eureka
-      # En local : localhost:8761
-      # En Docker : le nom du conteneur (discovery-service)
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    prefer-ip-address: true  # Utilise l'IP plutôt que le hostname (mieux pour Docker)
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,gateway
+      defaultZone: http://localhost:8761/eureka
