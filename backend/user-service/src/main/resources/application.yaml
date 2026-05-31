@@ -1,15 +1,28 @@
+server:
+  port: 8082
+
 spring:
   application:
     name: user-service
 
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
-      - org.springframework.boot.orm.jpa.autoconfigure.HibernateJpaAutoConfiguration
-server:
-  port: 8082  # Port unique d'entrée pour tout le système
+  datasource:
+    # URL pointant sur votre base locale "user_db"
+    url: jdbc:postgresql://localhost:5432/user_db
+    username: postgres
+    password: "0116" # ⚠️ Mettez votre mot de passe PostgreSQL ici
+    driver-class-name: org.postgresql.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# 🛠️ DÉSACTIVATION COMPLÈTE DE DISCOVERY SERVICE (EUREKA)
 eureka:
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: false # Dit au service de NE PAS s'enregistrer sur Eureka
+    fetch-registry: false       # Dit au service de NE PAS chercher la liste des autres services
