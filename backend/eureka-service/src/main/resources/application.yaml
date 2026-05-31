@@ -19,9 +19,3 @@ eureka:
     # 0 = immédiat (pratique en dev, à ajuster en prod)
     eviction-interval-timer-in-ms: 0
 
-# Exposer les endpoints de santé (utile pour Docker healthcheck)
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info

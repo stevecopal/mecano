@@ -42,3 +42,23 @@ management:
     web:
       exposure:
         include: health,info,gateway
+    name: gateway-service
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: auth-service
+            uri: lb://AUTH-SERVICE
+            predicates:
+              - Path=/api/auth/**
+
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/api/users/**
+server:
+  port: 8080  # Port unique d'entrée pour tout le système
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
